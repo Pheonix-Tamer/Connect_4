@@ -8,17 +8,16 @@ class Board(pygame.sprite.Sprite):
         else:
             super().__init__()
         
-        self.image = pygame.Surface([BOARD_WIDTH, BOARD_HEIGHT])
-        self.image.fill("blue")
-        self.topleft = ((SCREEN_WIDTH/2)-(BOARD_WIDTH/2), 100)
-        self.rect = self.image.get_rect()
+        self.topleft = ((SCREEN_WIDTH/2)-(BOARD_WIDTH/2), 100.0)
+        self.image, self.rect = self.create_image()
         self.rect.topleft = self.topleft
-    
-    # def draw(self, screen):
-    #     screen.blit(self.image, self.rect)
-    #     for i in range(5):
-    #         pygame.draw.line(screen, "white", (self.topleft[0] * (i + 1), self.topleft[1]), (self.topleft[0] * (i + 1), self.topleft[1]+ BOARD_HEIGHT))
         
-    def __repr__(self):
-        return f"topleft x: {self.topleft[0]}, topleft y: {self.topleft[1]}"
-    
+    def create_image(self):
+        image = pygame.Surface([BOARD_WIDTH, BOARD_HEIGHT])
+        image.fill("blue")
+        for i in range(7):
+            for j in range(6):
+                # pygame.draw.line(image, "white", ((100 * (i + 1)), 0), ((100 * (i + 1)), BOARD_HEIGHT))
+                pygame.draw.circle(image, "black", ((BOARD_GRID_WIDTH * (i + 1)) - BOARD_GRID_WIDTH/2, (BOARD_GRID_WIDTH * (j + 1)) - BOARD_GRID_WIDTH/2), BOARD_CIRCLE_RADIUS)
+        rect = image.get_rect()
+        return image, rect

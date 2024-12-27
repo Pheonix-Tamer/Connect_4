@@ -24,6 +24,8 @@ class Game():
         self.screen.fill("black")
         pygame.draw.circle(self.screen, "red", (500, 500), 40)
         pygame.draw.circle(self.screen, "yellow", (800, 500), 40)
+        for i in range(12):
+            pygame.draw.line(self.screen, "green", (100 * (i + 1), 0), (100 * (i + 1), 720))
         drawable.draw(self.screen)
         pygame.display.flip()
         
