@@ -1,61 +1,47 @@
 import pygame
-from constants import * #NOQA
+from constants import *
 from board import Board
 from chip import Chip
 
-class Game():
-    def __init__(self, height, width, fps):
-        pygame.init()
-        self.running = True
-        self.screen = pygame.display.set_mode((width, height))
-        self.clock = pygame.time.Clock()
-        self.dt = 0
-        self.fps = fps
-    
-    def events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-                
-    def update(self, updatable):
-        dt = self.clock.tick(self.fps) / 1000
-        updatable.update(dt)
+# initialising content
+pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Connect 4")
+running = True
+dt = 0
 
-    def draw(self, drawable):
-        self.screen.fill("black")
-        pygame.draw.circle(self.screen, "red", (500, 500), 40)
-        pygame.draw.circle(self.screen, "yellow", (800, 500), 40)
-        for i in range(12):
-            pygame.draw.line(self.screen, "green", (100 * (i + 1), 0), (100 * (i + 1), 720))
-        drawable.draw(self.screen)
-        pygame.display.flip()
-        
+clock = pygame.time.Clock()
 
-                
+# Groups declaraction
+updatable = pygame.sprite.Group()
+drawable = pygame.sprite.Group()
 
-def main():
-    game = Game(SCREEN_HEIGHT, SCREEN_WIDTH, GAME_FPS)
-    drawable = pygame.sprite.Group()
-    updatable = pygame.sprite.Group()
+Board.containers = (drawable, updatable)
+Chip.containers = (drawable, updatable)
+
+board = Board()
+chip = Chip("yellow")
+
+
+
+
+# Main Loop
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    dt = clock.tick(GAME_FPS) / 1000
     
-    Board.containers = (updatable, drawable)
-    Chip.containers = (updatable, drawable)
+    updatable.update(dt)
+    
+    screen.fill("black")
+    
+    for i in range(12):
+            pygame.draw.line(screen, "green", (100 * (i + 1), 0), (100 * (i + 1), 720))
+    drawable.draw(screen)
+    
+    pygame.display.flip()
     
 
-    board = Board()
-    chip = Chip("red")
-    # board.draw(game.screen)
-    
-    
-    while game.running:
-        game.events()
-        game.update(updatable)
-        game.draw(drawable)
-    
-    
-    pygame.quit()
-    quit()
-    
-    
-if __name__ == "__main__":
-    main()
+
+pygame.quit()
