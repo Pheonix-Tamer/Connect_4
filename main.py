@@ -1,6 +1,7 @@
 import pygame
 from constants import * #NOQA
 from board import Board
+from chip import Chip
 
 class Game():
     def __init__(self, height, width, fps):
@@ -38,8 +39,11 @@ def main():
     updatable = pygame.sprite.Group()
     
     Board.containers = (updatable, drawable)
+    Chip.containers = (updatable, drawable)
+    
 
     board = Board()
+    chip = Chip("red")
     # board.draw(game.screen)
     
     
