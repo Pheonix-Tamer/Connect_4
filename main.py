@@ -1,4 +1,5 @@
 import pygame
+import random
 from constants import *
 from board import Board
 from chip import Chip
@@ -13,14 +14,10 @@ dt = 0
 clock = pygame.time.Clock()
 
 # Groups declaraction
-updatable = pygame.sprite.Group()
-drawable = pygame.sprite.Group()
-
-Board.containers = (drawable, updatable)
-Chip.containers = (drawable, updatable)
+chips = pygame.sprite.Group()
 
 board = Board()
-chip = Chip("yellow")
+chip_d = Chip("yellow")
 
 
 
@@ -30,15 +27,20 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            chip = Chip(random.choice(["red", "yellow"]), pos[0], pos[1])
+            chips.add(chip)
+            
     dt = clock.tick(GAME_FPS) / 1000
     
-    updatable.update(dt)
-    
+    chips.update(dt)
     screen.fill("black")
     
     for i in range(12):
             pygame.draw.line(screen, "green", (100 * (i + 1), 0), (100 * (i + 1), 720))
-    drawable.draw(screen)
+    chips.draw(screen)
+    
     
     pygame.display.flip()
     
