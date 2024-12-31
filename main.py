@@ -39,6 +39,7 @@ while running:
     
     for i in range(12):
             pygame.draw.line(screen, "green", (100 * (i + 1), 0), (100 * (i + 1), 720))
+    board.draw(screen)
     chips.draw(screen)
     
     
